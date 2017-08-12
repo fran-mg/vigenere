@@ -29,68 +29,59 @@ public class Main extends Application {
 
 	public static String CipherThisText(String strSource, String strKey, boolean isToEncipher) {
 		String strCiphered = "";
-		String strRepeatedKey = "";
-		while(strSource.length() > strRepeatedKey.length()) {
-			strRepeatedKey = strRepeatedKey + strKey;
-		}
-
+		int intCountKey = 0;
+		int intCountSource = 0; 
 		// check through each character in the Source string
-		for(int intCharCounter = 0; intCharCounter < strSource.length(); intCharCounter = intCharCounter + 1) {
-			char chCipher = chCipherWithVigenere( 
-					strSource.charAt(intCharCounter), 
-					strRepeatedKey.charAt(intCharCounter), 
-					isToEncipher
-					);
+		while(intCountSource < strSource.length()) {
+			char chSource = strSource.charAt(intCountSource);
+			char chCipher;
+			// only encipher letters
+			if (! Character.isLetter(chSource)) {
+				chCipher = chSource;
+			} else {
+				chCipher = chCipherWithVigenere(chSource,strKey.charAt(intCountKey),isToEncipher);
+				// because we enciphered this, move to the next letter in the key
+				intCountKey = intCountKey + 1;
+				if (intCountKey >= strKey.length()) intCountKey = 0;
+			}
 			strCiphered = strCiphered + chCipher;			
+			intCountSource = intCountSource + 1;
 		}
 		return strCiphered;
-}
+	}
 
 	public static char chCipherWithVigenere(char chSource, char chKey, boolean isToEncipher) {
 		// get the source character and turn it into a number A=1, B=2, etc
 		int numSource = numberFromLetter(chSource);
-		// don't do anything with the character unless its a letter
-		if (numSource < 1 || (numSource > 26 && numSource < 33) || numSource > 58) {
-			return chSource;
-		} else {				
+		int numKey = numberFromLetter(chKey);
+		int numCipher;
 
-			int numKey = numberFromLetter(chKey);
-			int numCipher;
-
-			if (isToEncipher) {
-				// enciphering adds the key
-				numCipher = numSource + numKey;
-				if (numCipher > 26) {
-					numCipher = numCipher - 26;
-				}
-			} else {
-				// Deciphering subtracts the key
-				numCipher = numSource - numKey;
-				if (numCipher < 1 ) {
-					numCipher = numCipher + 26;
-				}
-			}
+		if (isToEncipher) {
+			// enciphering adds the key
+			numCipher = numSource + numKey;
 			// in Vegenere tables Key A means no translation so we minus 1
 			numCipher = numCipher - 1;
-
-			char chCipher = letterFromNumber(numCipher);
-			if (Character.isLowerCase(chSource)) {
-				chCipher = Character.toLowerCase(chCipher);
-			}
-			return chCipher;
+		} else {
+			// Deciphering subtracts the key
+			numCipher = numSource - numKey;
+			numCipher = numCipher + 1;
 		}
+
+		// ensure the table wraps around (always gives between 1 and 26)
+		if (numCipher > 26) {
+			numCipher = numCipher - 26;
+		}
+		if (numCipher < 1 ) {
+			numCipher = numCipher + 26;
+		}
+
+		char chCipher = letterFromNumber(numCipher);
+		if (Character.isLowerCase(chSource)) {
+			chCipher = Character.toLowerCase(chCipher);
+		}
+		return chCipher;
 	}
 
-
-/*	private static int numberFromLetter(char letter) {
-		if (numSource >= 65 || numSource <= 90 ) {
-			int number = ((int) letter) - 64;	
-		}
-		else
-			int number = ((int)letter) - 96;
-		return number;
-	}
-*/
 	private static int numberFromLetter(char letter) {
 		int number = ((int) letter) - 64;
 		if (number >= 33) {
