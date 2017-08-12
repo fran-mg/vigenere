@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="514.0" prefWidth="553.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MyController">
+   <children>
+      <Button fx:id="CipherIt" layoutX="202.0" layoutY="308.0" mnemonicParsing="false" onAction="#CipherTheText" text="Decipher/ Encipher" />
+      <TextField fx:id="SourceText" layoutX="27.0" layoutY="108.0" prefHeight="132.0" prefWidth="497.0" promptText="Text to encipher or decipher" />
+      <Text layoutX="161.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vigenere Cipher">
+         <font>
+            <Font name="System Bold" size="32.0" />
+         </font>
+      </Text>
+      <TextField fx:id="CipheredText" layoutX="33.0" layoutY="354.0" prefHeight="132.0" prefWidth="497.0" promptText="Enciphered or Deciphered text will appear here" />
+      <TextField fx:id="KeyText" layoutX="183.0" layoutY="257.0" promptText="Key" />
+      <VBox alignment="CENTER_LEFT" layoutX="382.0" layoutY="250.0" prefHeight="104.0" prefWidth="157.0" spacing="10.0">
+         <children>
+            <RadioButton fx:id="En" alignment="BOTTOM_CENTER" mnemonicParsing="false" selected="true" text="Encipher">
+               <toggleGroup>
+                  <ToggleGroup fx:id="EnDe" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="De" mnemonicParsing="false" text="Decipher" toggleGroup="$EnDe" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
